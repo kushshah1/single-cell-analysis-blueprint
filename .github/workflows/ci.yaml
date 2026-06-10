@@ -52,7 +52,7 @@ env:
   TEST_IMAGE: nvcr.io/rw983xdqtcdp/auto_test_team/blueprint-github-test-image:latest
   QA_TESTER_REPO: https://github.com/bp-cicd-org/qa-tester.git
   DOCKER_IMG_NAME: nvcr.io/nvidia/rapidsai/notebooks
-  DOCKER_IMG_TAG: "25.06-cuda12.8-py3.12"
+  DOCKER_IMG_TAG: "26.04-cuda12-py3.12"
   ENABLE_EMAIL_NOTIFICATION: true  # Set to false to disable email notifications
 
 jobs:
@@ -332,7 +332,10 @@ jobs:
             if [ -f requirements.txt ]; then
               pip install -r requirements.txt
             fi
-            
+
+            # Install the precompiled rapids-singlecell wheel matching the container's CUDA 12 runtime
+            pip install rapids-singlecell-cu12==0.15.2
+
             # Execute notebook with papermill
             python -m papermill notebooks/${{ matrix.notebook }} notebook_output/result_${{ matrix.notebook }} \
               --log-output \

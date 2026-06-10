@@ -42,13 +42,13 @@ RAPIDS can be installed using Pip, Conda, or Docker.  To replicate the same expe
 curl -fsSL https://get.docker.com -o get-docker.sh
 sh get-docker.sh
 ```
-<i class="fas fa-download text-purple"></i> **3.2 Get RAPIDS:** Use the code below to pull the same RAPIDS container used in the Launchable.  Example for 26.02:
+<i class="fas fa-download text-purple"></i> **3.2 Get RAPIDS:** Use the code below to pull the same RAPIDS container used in the Launchable.  Example for 26.04:
 ```
 docker run --gpus all --pull always --rm -it \
     --shm-size=1g --ulimit memlock=-1 --ulimit stack=67108864 \
     -p 8888:8888 -p 8787:8787 -p 8786:8786
     -v ~/single-cell-analysis-blueprint:/home/rapids/notebooks/single-cell-analysis-blueprint
-    nvcr.io/nvidia/rapidsai/notebooks:26.02-cuda13-py3.12
+    nvcr.io/nvidia/rapidsai/notebooks:26.04-cuda13-py3.12
 ```
 **Note:** The volume is currently assuming that you cloned the `single-cell-analysis-blueprint` repository into your `HOME` folder (`~/single-cell-analysis-blueprint`).  If you did not clone it there, please change the `~/single-cell-analysis-blueprint` portion of the above to the correct path before running the command.
 
@@ -62,6 +62,9 @@ Once the JupyterLab instance loads, open the terminal form the JupyterLab GUI, a
 ```
 cd /home/rapids/notebooks/single-cell-analysis-blueprint
 pip install -r requirements.txt
+# Install the precompiled rapids-singlecell wheel that matches your container's CUDA runtime.
+# The example container above is CUDA 13; for a CUDA 12 container use rapids-singlecell-cu12 instead.
+pip install rapids-singlecell-cu13==0.15.2
 ```
 
 For additional information on RAPIDS-singlecell please visit the [RAPIDS-singlecell Docs](https://rapids-singlecell.readthedocs.io/)

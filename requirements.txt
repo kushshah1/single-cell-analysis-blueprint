@@ -30,7 +30,9 @@ PIMS==0.7
 pooch==1.9.0
 pynndescent==0.6.0
 rangehttpserver==1.4.0
-rapids_singlecell==0.14.1
+# rapids-singlecell is installed separately as a precompiled, CUDA-specific wheel
+# (rapids-singlecell-cu12 / rapids-singlecell-cu13) so it matches the container's CUDA
+# runtime. See the docker/brev compose files (EXTRA_PIP_PACKAGES) and .github/workflows/ci.yaml.
 s3fs==2026.2.0
 scanpy==1.12
 scikit-misc==0.5.2

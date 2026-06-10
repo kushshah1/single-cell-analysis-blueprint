@@ -3,6 +3,12 @@
 This directory contains configuration files to assist in creating a custom Brev Launchable environment. For full instructions, please consult our [Creating Custom Brev Resource](../../docs/creating_custom_brev.md) guide.
 
 ## File manifest
+RAPIDS 26.04 (current / recommended)
+```
+docker/brev/docker-compose-nb-2604-cuda12.yaml  # CUDA 12 GPUs (most instances); installs the precompiled rapids-singlecell-cu12 wheel
+docker/brev/docker-compose-nb-2604-cuda13.yaml  # CUDA 13 GPUs (Blackwell, Grace Hopper, DGX Spark); installs the precompiled rapids-singlecell-cu13 wheel
+```
+
 RAPIDS 25.04
 ```
 docker/brev/docker-compose-nb-2504-H100-C.yaml  # Use this if you are selecting H100 instances on Crusoe and need RAPIDS 25.04

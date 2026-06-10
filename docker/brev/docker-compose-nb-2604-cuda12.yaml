@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   backend:
-    image: nvcr.io/nvidia/rapidsai/notebooks:26.02-cuda12-py3.12
+    image: nvcr.io/nvidia/rapidsai/notebooks:26.04-cuda12-py3.12
     pull_policy: always
     ulimits:
       memlock: -1
@@ -15,6 +15,9 @@ services:
             - driver: nvidia
               count: all
               capabilities: [gpu]
+    environment:
+        # Precompiled rapids-singlecell wheel matching the container's CUDA 12 runtime.
+        EXTRA_PIP_PACKAGES: "rapids-singlecell-cu12==0.15.2"
     ports:
       - "0.0.0.0:8888:8888"      # JupyterLab
       - "0.0.0.0:8787:8787"      # Dask dashboard
