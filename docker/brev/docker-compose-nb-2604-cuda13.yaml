@@ -16,16 +16,22 @@ services:
               count: all
               capabilities: [gpu]
     environment:
-        # Precompiled rapids-singlecell wheel matching the container's CUDA 13 runtime.
-        EXTRA_PIP_PACKAGES: "rapids-singlecell-cu13==0.15.2"
+      EXTRA_PIP_PACKAGES: "rapids-singlecell-cu13==0.15.2"
     ports:
-      - "0.0.0.0:8888:8888"      # JupyterLab
-      - "0.0.0.0:8787:8787"      # Dask dashboard
-      - "0.0.0.0:8786:8786"      # Dask scheduler
+      - "0.0.0.0:8888:8888"
+      - "0.0.0.0:8787:8787"
+      - "0.0.0.0:8786:8786"
     volumes:
-      - /home/ubuntu:/notebooks/workshop/
+      - /home/ubuntu/single-cell-analysis-blueprint:/notebooks/
     user: root
-    working_dir: /notebooks/workshop/single-cell-analysis-blueprint
+    working_dir: /notebooks
     entrypoint: ["/home/rapids/entrypoint.sh"]
-    command: bash /notebooks/workshop/single-cell-analysis-blueprint/setup_launchable.sh
+    command:
+      - /bin/bash
+      - -lc
+      - |
+          cd /notebooks
+          git fetch origin workshop_branch
+          git checkout -B workshop_branch origin/workshop_branch
+          exec bash /notebooks/setup_launchable.sh
     restart: unless-stopped
