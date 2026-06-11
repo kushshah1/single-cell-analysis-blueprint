@@ -4,34 +4,49 @@ services:
   backend:
     image: nvcr.io/nvidia/rapidsai/notebooks:26.04-cuda13-py3.12
     pull_policy: always
+
     ulimits:
       memlock: -1
       stack: 67108864
+
     shm_size: 1g
+
     deploy:
       resources:
         reservations:
           devices:
             - driver: nvidia
               count: all
-              capabilities: [gpu]
+              capabilities:
+                - gpu
+
     environment:
       EXTRA_PIP_PACKAGES: "rapids-singlecell-cu13==0.15.2"
+
     ports:
-      - "0.0.0.0:8888:8888"
-      - "0.0.0.0:8787:8787"
-      - "0.0.0.0:8786:8786"
+      - "0.0.0.0:8888:8888"  # JupyterLab
+      - "0.0.0.0:8787:8787"  # Dask Dashboard
+      - "0.0.0.0:8786:8786"  # Dask Scheduler
+
     volumes:
-      - /home/ubuntu/single-cell-analysis-blueprint:/notebooks/
+      - /home/ubuntu:/notebooks/workshop/
+
     user: root
-    working_dir: /notebooks
-    entrypoint: ["/home/rapids/entrypoint.sh"]
+
+    working_dir: /notebooks/workshop/single-cell-analysis-blueprint
+
+    entrypoint:
+      - /home/rapids/entrypoint.sh
+
     command:
-      - /bin/bash
-      - -lc
+      - bash
+      - -c
       - |
-          cd /notebooks
-          git fetch origin workshop_branch
-          git checkout -B workshop_branch origin/workshop_branch
-          exec bash /notebooks/setup_launchable.sh
+          git config --global --add safe.directory /notebooks/workshop/single-cell-analysis-blueprint && \
+          git checkout workshop_branch && \
+          git pull --ff-only origin workshop_branch && \
+          echo "Running branch: $(git branch --show-current)" && \
+          echo "Commit: $(git rev-parse --short HEAD)" && \
+          bash setup_launchable.sh
+
     restart: unless-stopped
