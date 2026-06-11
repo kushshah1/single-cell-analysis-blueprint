@@ -23,9 +23,9 @@ services:
       - "0.0.0.0:8787:8787"      # Dask dashboard
       - "0.0.0.0:8786:8786"      # Dask scheduler
     volumes:
-      - /home/ubuntu/single-cell-analysis-blueprint:/notebooks/
+      - /home/ubuntu:/workshops/
     user: root
-    working_dir: /notebooks
+    working_dir: /workshops/single-cell-analysis-blueprint
     entrypoint: ["/home/rapids/entrypoint.sh"]
     command: bash /notebooks/setup_launchable.sh
     restart: unless-stopped
